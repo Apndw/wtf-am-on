@@ -8,130 +8,137 @@ struct Node {
 };
 
 class LinkedList {
-  private:
-    Node *head, *tail, *current, *newNode;
+private:
+  Node *head, *tail, *current, *newNode;
 
-    bool isEmpty() {
-      return head == nullptr;
+  bool isEmpty() {
+    return head == nullptr;
+  }
+
+  void createNode(const int &data) {
+    newNode = new Node();
+    newNode->data = data;
+    newNode->next = newNode->prev = nullptr;
+  }
+
+  void initNode() {
+    head = tail = newNode;
+  }
+
+public:
+  LinkedList() {
+    head = tail = nullptr;
+  }
+
+  void insertHead(const int &data) {
+    createNode(data);
+
+    if (isEmpty()) {
+      initNode();
+      return;
     }
 
-    void createNode(const int &data) {
-      newNode = new Node();
-      newNode->data = data;
-      newNode->next = newNode->prev = nullptr;
+    head->prev = newNode;
+    newNode->next = head;
+
+    head = newNode;
+  }
+
+  void insertTail(const int &data) {
+    createNode(data);
+
+    if (isEmpty()) {
+      initNode();
+      return;
     }
 
-  public:
-    LinkedList() {
+    tail->next = newNode;
+    newNode->prev = tail;
+
+    tail = newNode;
+  }
+
+  void updateHead(const int &data) {
+    if (isEmpty()) return;
+
+    head->data = data;
+  }
+
+  void updateTail(const int &data) {
+    if (isEmpty()) return;
+
+    tail->data = data;
+  }
+
+  void removeHead() {
+    if (isEmpty()) return;
+
+    if (head == tail) {
       head = tail = nullptr;
+      return;
     }
 
-    void insertHead(const int &data) {
-      createNode(data);
+    current = head;
 
-      if (isEmpty()) {
-        head = tail = newNode;
-        return;
-      }
+    head = head->next;
+    head->prev = nullptr;
 
-      head->prev = newNode;
-      newNode->next = head;
-      head = newNode;
+    delete current;
+  }
+
+  void removeTail() {
+    if (isEmpty()) return;
+
+    if (head == tail) {
+      head = tail = nullptr;
+      return;
     }
 
-    void insertTail(const int &data) {
-      createNode(data);
+    current = tail;
 
-      if (isEmpty()) {
-        head = tail = newNode;
-        return;
-      }
+    tail = tail->prev;
+    tail->next = nullptr;
 
-      tail->next = newNode;
-      newNode->prev = tail;
-      tail = newNode;
-    }
+    delete current;
+  }
 
-    void updateHead(const int &data) {
-      if (isEmpty()) return;
+  void showData() {
+    if (isEmpty()) return;
 
-      head->data = data;
-    }
+    current = head;
+    int index = 0;
 
-    void updateTail(const int &data) {
-      if (isEmpty()) return;
+    do {
+      cout << "data ke-" << index << " bernilai " << current->data << endl;
 
-      tail->data = data;
-    }
-
-    void removeHead() {
-      if (isEmpty()) return;
-
-      if (head == tail) {
-        head = tail = nullptr;
-        return;
-      }
-
-      current = head;
-      head->next->prev = nullptr;
-      head = head->next;
-
-      delete current;
-    }
-
-    void removeTail() {
-      if (isEmpty()) return;
-
-      if (head == tail) {
-        head = tail = nullptr;
-        return;
-      }
-
-      current = tail;
-      tail->prev->next = nullptr;
-      tail = tail->prev;
-
-      delete current;
-    }
-
-    void showData() {
-      if (isEmpty()) return;
-
-      current = head;
-
-      int index = 0;
-
-      do {
-        cout << "data ke-" << index << " bernilai " << current->data << endl;
-
-        index++;
-        current = current->next;
-      } while (current != nullptr);
-    }
+      index++;
+      current = current->next;
+    } while (current != nullptr);
+  }
 };
 
 int main() {
   LinkedList ll;
 
-  ll.insertHead(25);
-  ll.insertTail(75);
-  ll.insertTail(90);
+  ll.insertHead(32);
+  ll.insertTail(19);
+  ll.insertTail(72);
 
   ll.showData();
 
-  cout << "==============" << endl;
+  cout << "================" << endl;
 
-  ll.updateHead(32);
-  ll.updateTail(19);
+  ll.updateHead(93);
+  ll.updateTail(53);
 
   ll.showData();
 
-  cout << "==============" << endl;
+  cout << "================" << endl;
 
   ll.removeHead();
   ll.removeTail();
 
   ll.showData();
 
-  cout << "==============" << endl;
+  cout << "================" << endl;
 }
